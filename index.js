@@ -25,6 +25,13 @@ const createSecretNumber = () => {
   return secretNumber;
 };
 
+function greet(name = "Stranger") {
+  const greetings = ["Hi", "Hey", "Hallo", "Yo"];
+  let randomIndex = Math.floor(Math.random() * greetings.length);
+  let randomGreetings = greetings[randomIndex];
+  return `${randomGreetings}, ${name}!`;
+}
+
 // Function which checks the player's input regarding the secret number
 function checkInput(input, secretNumber) {
   let result = { bulls: 0, cows: 0 };
@@ -55,7 +62,7 @@ const start = () => {
   const secretNumber = createSecretNumber();
 
   console.log(
-    `Hello ${name}! Welcome to Bulls and Cows! 🎉 It's like being a secret agent on a code-cracking mission. The computer has a 4-digit secret number with unique digits. Your goal? Figure it out! You get 🐂 "Bulls" for the right digits in the right spots and 🐄 "Cows" for the right digits in the wrong spots.\n`
+    `${greet()}! Welcome to Bulls and Cows! 🎉 It's like being a secret agent on a code-cracking mission. The computer has a 4-digit secret number with unique digits. Your goal? Figure it out! You get 🐂 "Bulls" for the right digits in the right spots and 🐄 "Cows" for the right digits in the wrong spots.\n`
   );
 
   const gameMode = prompt(
@@ -112,7 +119,7 @@ const start = () => {
       break;
     } else {
       console.log(
-        `Here is a hint: you have ${result.bulls} bulls and ${result.cows} cows. Keep going...`
+        `Here is a hint: you got ${result.bulls} bulls and ${result.cows} cows. Keep going...`
       );
     }
   } while (true);
