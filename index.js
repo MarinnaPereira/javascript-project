@@ -12,7 +12,7 @@ import chalk from "chalk";
 
 // Get player's name
 let playerName = prompt(
-  chalk.magenta.bgGreenBright.bold("Enter your name?") + " "
+  chalk.cyanBright.bgGreenBright.bold("Enter your name?") + " "
 );
 const name = playerName || "Stranger";
 
@@ -71,7 +71,13 @@ const start = () => {
     chalk.cyanBright(
       `\n${greet(
         name
-      )}! Welcome to Bulls and Cows! 🎉 It's like being a secret agent on a code-cracking mission. The computer has a 4-digit secret number with unique digits. Your goal? Figure it out! You get 🐂 "Bulls" for the right digits in the right spots and 🐄 "Cows" for the right digits in the wrong spots.\n`
+      )}! Welcome to Bulls and Cows! 🎉 It's like being a secret agent on a code-cracking mission. The computer has a ${chalk.greenBright(
+        "4-digit secret number"
+      )} with unique digits. Your goal? Figure it out! You get 🐂 ${chalk.greenBright(
+        "Bulls"
+      )} for the right digits in the right spots and 🐄  ${chalk.greenBright(
+        "Cows"
+      )} for the right digits in the wrong spots.\n`
     )
   );
 
@@ -83,12 +89,24 @@ const start = () => {
 
   console.log(
     chalk.cyanBright(
-      "In the (1) easy mode you'll have no limit of attempts, but in in the (2) hard mode you'll have a maximum of 8 attempts. So... \n"
+      `For the ${chalk.greenBright(
+        "easy mode"
+      )} with no limit of attempts, type ${chalk.rgb(
+        245,
+        252,
+        205
+      )("1")}. \nFor the ${chalk.greenBright(
+        "hard mode"
+      )} hard mode with a maximum of 8 attempts, type ${chalk.rgb(
+        245,
+        252,
+        205
+      )("2")}.\n`
     )
   );
 
   const gameMode = prompt(
-    chalk.magenta.bgGreenBright.bold("Enter your choice (1/2):") + " "
+    chalk.cyanBright.bgGreenBright.bold("Enter your choice (1/2):") + " "
   );
   const chosenMode = gameMode.toLowerCase() === "1" ? "Easy mode" : "Hard mode";
 
@@ -100,7 +118,7 @@ const start = () => {
   let totalGames = 0;
   let totalAttempts = 0;
 
-  while (playAgain.toLowerCase() === "yes") {
+  while (playAgain.trim().toLowerCase() === "yes") {
     totalGames++;
     const secretNumber = createSecretNumber();
     let attempts = 0;
@@ -118,14 +136,14 @@ const start = () => {
         );
       }
       let input = prompt(
-        chalk.magenta.bgGreenBright.bold("Enter a 4-digit number:") + " "
+        chalk.cyanBright.bgGreenBright.bold("Enter a 4-digit number:") + " "
       );
 
       // wrong length
       if (input.length !== 4) {
         console.log(
           chalk.red(
-            `\n📢 Oops! Your entry should be a 4-digit number. Try again, Agent ${name}! 🕵️‍♂️💡\n`
+            `\n📢 Oops! Your entry should be a 4-digit number. Try again, Agent ${name}!\n`
           )
         );
         continue;
@@ -135,7 +153,7 @@ const start = () => {
       if (!/^\d+$/.test(input)) {
         console.log(
           chalk.red(
-            `\n📢 Watch out! Your entry should contain only numeric digits, no secret symbols or letters. Try again! 🕵️‍♂️🔢\n`
+            `\n📢 Watch out! Your entry should contain only numeric digits, no secret symbols or letters. Try again! \n`
           )
         );
         continue;
@@ -145,7 +163,7 @@ const start = () => {
       if (hasRepeatedChars(input)) {
         console.log(
           chalk.red(
-            `\n📢 Whoops! Remember, the code should have four unique numbers. No repeats allowed. Try again with distinct digits! 🕵️‍♂️🔢\n`
+            `\n📢 Whoops! Remember, the code should have four unique numbers. No repeats allowed. Try again with distinct digits!\n`
           )
         );
         continue;
@@ -157,52 +175,72 @@ const start = () => {
 
       if (bulls === 4) {
         console.log(
-          chalk.green.bold(
-            `\nCongratulations, Agent ${name}! You cracked the secret code in ${attempts} attempts! You're a code-cracking genius 🏆🎉. You've earned your stripes as the ultimate Bulls and Cows champion! 🥳💼🕵️‍♂️\n`
+          chalk.rgb(
+            245,
+            252,
+            205
+          )(
+            `\n🎉 Congratulations, Agent ${name}! 🎉\nYou cracked the secret code in ${attempts} attempts! You're a code-cracking genius 🏆. You've earned your stripes as the ultimate Bulls and Cows champion! 🥳💼🕵️‍♂️\n`
           )
         );
         break;
       }
       if (bulls === 0 && cows === 0) {
         const noBullsNoCowsMessages = [
-          "Keep trying, you'll get it!\n",
-          "Don't give up, you're close!\n",
-          "You can do it, just a little more.\n",
+          "\nKeep trying, you'll get it!",
+          "\nDon't give up, you're close!",
+          "\nYou can do it, just a little more.",
         ];
         console.log(
-          chalk.greenBright(
+          chalk.white(
             noBullsNoCowsMessages[
               Math.floor(Math.random() * noBullsNoCowsMessages.length)
             ]
           )
         );
-      } else {
+      } else if (attempts < 8) {
         console.log(
           chalk.greenBright(
-            `Here is a hint: you got ${chalk.white(
-              bulls
-            )} bulls and ${chalk.white(cows)} cows. Keep going...`
+            `\nHere is a hint:  ${chalk.white(
+              "you got " +
+                chalk.greenBright(bulls) +
+                " bulls and " +
+                chalk.greenBright(cows) +
+                " cows. Keep going... "
+            )} `
           )
         );
       }
       if (attempts === maxAttempts) {
         console.log(
-          chalk.red.bold(
-            `You've reached the maximum number of attempts.💥 The secret code was ${secretNumber}. Better luck next time!\n`
+          chalk.red(
+            `\n💥 You've reached the maximum number of attempts. 💥\nThe secret code was ${chalk.rgb(
+              245,
+              252,
+              205
+            )(secretNumber)}. Better luck next time!\n`
           )
         );
       }
     }
     totalAttempts += attempts;
-    console.log(chalk.magentaBright(`Total games played: ${totalGames}`));
-    console.log(chalk.magentaBright(`Total attempts made: ${totalAttempts}`));
+    console.log(
+      chalk.greenBright(
+        `Total games played: ${chalk.rgb(245, 252, 205)(totalGames)}`
+      )
+    );
+    console.log(
+      chalk.greenBright(
+        `Total attempts made: ${chalk.rgb(245, 252, 205)(totalAttempts)}\n`
+      )
+    );
 
     playAgain = prompt(
-      chalk.magenta.bgGreenBright.bold("Play again? (yes/no):") + " "
-    ).toLowerCase();
+      chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
+    );
   }
 
-  console.log(chalk.cyanBright("Thanks for playing Bulls and Cows!"));
+  console.log(chalk.cyanBright("\nThanks for playing Bulls and Cows!"));
 };
 
 start();
