@@ -1,50 +1,48 @@
+import * as chalk from "chalk";
+import * as promptSync from "prompt-sync";
+
 console.clear();
-
-// Bulls and Cows
-
-// Get library for user input
-import promptSync from "prompt-sync";
-const prompt = promptSync();
-
-// Get library for customize terminal colors
-import chalk from "chalk";
 
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
 
-// Get player's name
-let playerName = prompt(
+const prompt = promptSync();
+
+let playerName: string = prompt(
   chalk.cyanBright.bgGreenBright.bold("Enter your name?") + " "
 );
 
-const name = playerName.trim() || "Stranger";
+const name: string = playerName.trim() || "Stranger";
 
-// Function which greets the user using random greetings
-function greet(name) {
-  const greetings = ["Hi", "Hey", "Hello", "Yo"];
-  let randomIndex = Math.floor(Math.random() * greetings.length);
-  let randomGreetings = greetings[randomIndex];
+function greet(name: string): string {
+  const greetings: string[] = ["Hi", "Hey", "Hello", "Yo"];
+  let randomIndex: number = Math.floor(Math.random() * greetings.length);
+  let randomGreetings: string = greetings[randomIndex];
   return `${randomGreetings}, ${chalk.greenBright(name)}!`;
 }
 
-// Function which creates a secret number with 4 unique digits
-const createSecretNumber = () => {
-  const possibleDigits = "0123456789";
-  let secretNumber = "";
+const createSecretNumber = (): string => {
+  const possibleDigits: string = "0123456789";
+  let secretNumber: string = "";
 
   while (secretNumber.length < 4) {
-    const randomIndex = Math.floor(Math.random() * possibleDigits.length);
-    const randomDigit = possibleDigits[randomIndex];
+    const randomIndex: number = Math.floor(
+      Math.random() * possibleDigits.length
+    );
+    const randomDigit: string = possibleDigits[randomIndex];
     if (!secretNumber.includes(randomDigit)) {
       secretNumber += randomDigit;
     }
   }
-  // console.log(secretNumber);
+  console.log(secretNumber);
+
   return secretNumber;
 };
 
-// Function which counts bulls and cows in the player's input
-function countBullsAndCows(input, secretNumber) {
-  let result = { bulls: 0, cows: 0 };
+function countBullsAndCows(
+  input: string,
+  secretNumber: string
+): { bulls: number; cows: number } {
+  let result: { bulls: number; cows: number } = { bulls: 0, cows: 0 };
   for (let i = 0; i < 4; i++) {
     if (secretNumber[i] === input[i]) {
       result.bulls++;
@@ -55,10 +53,9 @@ function countBullsAndCows(input, secretNumber) {
   return result;
 }
 
-// Function which checks the input for repeated characters
-function hasRepeatedChars(input) {
+function hasRepeatedChars(input: string): boolean {
   for (let i = 0; i < input.length; i++) {
-    const char = input[i];
+    const char: string = input[i];
     if (input.includes(char, i + 1)) {
       return true;
     }
@@ -66,14 +63,12 @@ function hasRepeatedChars(input) {
   return false;
 }
 
-// Start function
-const start = () => {
-  // welcome message
+const start = (): void => {
   console.log(
     chalk.cyanBright(
       `\n${greet(
         name
-      )} Welcome to Bulls and Cows! 👋 It's like being a secret agent on a code-cracking mission. 🕵️‍♂️ \nThe computer has a ${chalk.greenBright(
+      )}! Welcome to Bulls and Cows! 👋 It's like being a secret agent on a code-cracking mission. 🕵️‍♂️ \nThe computer has a ${chalk.greenBright(
         "secret number"
       )} with ${chalk.greenBright(
         "4 unique digits"
@@ -85,10 +80,9 @@ const start = () => {
     )
   );
 
-  // messages for setting up game level/mode
   console.log(
     chalk.cyanBright(
-      "Before we jump right into your mission, lets's set up its level.\n"
+      "Before we jump right into your mission, let's set up its level.\n"
     )
   );
 
@@ -110,10 +104,9 @@ const start = () => {
     )
   );
 
-  let gameMode = "";
-  let chosenMode = "";
+  let gameMode: string = "";
+  let chosenMode: string = "";
 
-  // get the game mode from the user
   while (chosenMode === "") {
     gameMode = prompt(
       chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
@@ -132,45 +125,38 @@ const start = () => {
     }
   }
 
-  console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
+  console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!\n`));
 
-  // define maximum of attempts
-  const maxAttempts = gameMode === "1" ? Infinity : 10;
+  const maxAttempts: number = gameMode === "1" ? Infinity : 10;
 
-  let playAgain = "yes";
-  let totalGames = 0;
-  let totalAttempts = 0;
+  let playAgain: string = "yes";
+  let totalGames: number = 0;
+  let totalAttempts: number = 0;
 
-  // play the game
   while (playAgain.trim().toLowerCase() === "yes") {
     totalGames++;
-    const secretNumber = createSecretNumber();
-    let attempts = 0;
+    const secretNumber: string = createSecretNumber();
+    let attempts: number = 0;
 
     console.log(
       chalk.cyanBright(
-        chalk.greenBright("\n▶️ Ready for Bulls and Cows? ") +
-          "🎮 Great! Now, give us your best shot.\n"
+        "Ready for Bulls and Cows? 🎮 Great! Now, give us your best shot.\n"
       )
     );
 
-    // catches the user's guess
     while (attempts < maxAttempts) {
       if (chosenMode !== "Easy mode" && attempts > 0) {
         console.log(
           chalk.yellow(`You have ${maxAttempts - attempts} attempts left.\n`)
         );
-      } else if (chosenMode === "Easy mode" && attempts > 0) {
-        console.log(chalk.yellow(`This is your attempt No. ${attempts}.\n`));
       }
 
-      let input = prompt(
+      let input: string = prompt(
         chalk.cyanBright.bgGreenBright.bold("Enter your guess:") + " "
       );
 
       input = input.trim();
 
-      // test input length
       if (input.length !== 4) {
         console.log(
           chalk.redBright(
@@ -180,7 +166,6 @@ const start = () => {
         continue;
       }
 
-      // test input for no numeric character
       if (!/^\d+$/.test(input)) {
         console.log(
           chalk.redBright(
@@ -190,7 +175,6 @@ const start = () => {
         continue;
       }
 
-      // repeated character
       if (hasRepeatedChars(input)) {
         console.log(
           chalk.redBright(
@@ -217,7 +201,7 @@ const start = () => {
         break;
       }
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
-        const noBullsNoCowsMessages = [
+        const noBullsNoCowsMessages: string[] = [
           "keep trying, you'll get it!",
           "don't give up, you can make it!",
           "you can do it, try just a little more!",
@@ -258,7 +242,7 @@ const start = () => {
               245,
               252,
               205
-            )(secretNumber)}. Better luck next time! 🍀\n`
+            )(secretNumber)}. Better luck next time!\n`
           )
         );
       }
