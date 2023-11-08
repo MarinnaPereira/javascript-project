@@ -1,6 +1,6 @@
 console.clear();
 
-// Bulls and Cows
+// ! Bulls and Cows
 
 // Get library for user input
 import promptSync from "prompt-sync";
@@ -12,22 +12,23 @@ import chalk from "chalk";
 // Get library for centering text in the terminal
 import centerText from "center-text";
 
+// Prints the game name
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
 
 // Get player's name
-let playerName = prompt(
+const playerName = prompt(
   chalk.cyanBright.bgGreenBright.bold("Enter your name?") + " "
 );
 
 const name = playerName.trim() || "Stranger";
 
-// Function which greets the user using random greetings
-function greet(name) {
+// Function which greets the player using random greetings
+const greet = (name) => {
   const greetings = ["Hi", "Hey", "Hello", "Yo"];
-  let randomIndex = Math.floor(Math.random() * greetings.length);
-  let randomGreetings = greetings[randomIndex];
+  const randomIndex = Math.floor(Math.random() * greetings.length);
+  const randomGreetings = greetings[randomIndex];
   return `${randomGreetings}, ${chalk.greenBright(name)}!`;
-}
+};
 
 // Function which creates a secret number with 4 unique digits
 const createSecretNumber = () => {
@@ -45,11 +46,22 @@ const createSecretNumber = () => {
   return secretNumber;
 };
 
+// Function which checks the input for repeated characters
+const hasRepeatedChars = (input) => {
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+    if (input.includes(char, i + 1)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 // Function which checks if the input is a repeated guess
 const isRepeatedGuess = (gameGuesses, input) => gameGuesses.includes(input);
 
 // Function which counts bulls and cows in the player's input
-function countBullsAndCows(input, secretNumber) {
+const countBullsAndCows = (input, secretNumber) => {
   let result = { bulls: 0, cows: 0 };
   for (let i = 0; i < 4; i++) {
     if (secretNumber[i] === input[i]) {
@@ -59,21 +71,16 @@ function countBullsAndCows(input, secretNumber) {
     }
   }
   return result;
-}
+};
 
-// Function which checks the input for repeated characters
-function hasRepeatedChars(input) {
-  for (let i = 0; i < input.length; i++) {
-    const char = input[i];
-    if (input.includes(char, i + 1)) {
-      return true;
-    }
-  }
-  return false;
-}
+// Main function
+const main = () => {
+  // helper variables
+  let playAgain = "yes";
+  let showAttempt = true;
+  let totalGames = 0;
+  let totalVictories = 0;
 
-// Start function
-const start = () => {
   // welcome message
   console.log(
     chalk.cyanBright(
@@ -91,19 +98,22 @@ const start = () => {
     )
   );
 
-  // messages for setting up game level/mode
+  // message for setting up game level/mode
   console.log(
     chalk.cyanBright(
       "Before we jump right into your mission, lets's set up its level."
     )
   );
 
-  let playAgain = "yes";
-  let totalGames = 0;
-  let totalVictories = 0;
-
-  // play the game
+  // play loop
   while (playAgain.trim().toLowerCase() === "yes") {
+    // helper variables
+    let gameMode = "";
+    let chosenMode = "";
+    let attempts = 0;
+    const gameGuesses = [];
+
+    // message explaining game modes
     console.log(
       chalk.cyanBright(
         `\nFor the ${chalk.greenBright(
@@ -122,15 +132,13 @@ const start = () => {
       )
     );
 
-    let gameMode = "";
-    let chosenMode = "";
-
-    // get the game mode from the user
+    // get game mode choice from the player
     while (chosenMode === "") {
       gameMode = prompt(
         chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
       );
 
+      // set chosenMode
       if (gameMode.trim() === "1") {
         chosenMode = "Easy mode";
         break;
@@ -144,16 +152,19 @@ const start = () => {
       }
     }
 
+    // message with the chosen mode
     console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
 
     // define maximum of attempts
-    const maxAttempts = gameMode === "1" ? Infinity : 10;
+    const maxAttempts = chosenMode === "Easy mode" ? Infinity : 10;
 
+    // increases total of played games
     totalGames++;
-    const secretNumber = createSecretNumber();
-    let attempts = 0;
-    const gameGuesses = [];
 
+    // get secret number
+    const secretNumber = createSecretNumber();
+
+    // message first guess
     console.log(
       chalk.cyanBright(
         chalk.greenBright("\n▶️ Ready for Bulls and Cows? ") +
@@ -161,67 +172,85 @@ const start = () => {
       )
     );
 
-    // catches the user's guess
     while (attempts < maxAttempts) {
-      if (chosenMode !== "Easy mode" && attempts > 0) {
+      // message attempts left -> hard mode
+      if (chosenMode === "Hard mode" && attempts > 0 && showAttempt) {
         console.log(
           chalk.yellow(`You have ${maxAttempts - attempts} attempts left.\n`)
         );
-      } else if (chosenMode === "Easy mode" && attempts > 0) {
+      } else if (chosenMode === "Easy mode" && attempts > 0 && showAttempt) {
+        // message no. attempts -> easy mode
         console.log(chalk.yellow(`This is your attempt No. ${attempts}.\n`));
       }
 
+      // reset showAttempt
+      showAttempt = true;
+
+      // get player's guess
       let input = prompt(
         chalk.cyanBright.bgGreenBright.bold("Enter your guess:") + " "
       );
 
+      // treat input
       input = input.trim();
 
-      // test input length
+      // check input's length
       if (input.length !== 4) {
+        // error message
         console.log(
           chalk.redBright(
             `\n📢 Oops! Your entry should be a 4-digit number. Try again, Agent ${name}!\n`
           )
         );
+        showAttempt = false;
         continue;
       }
 
-      // test input for no numeric character
+      // check if input has no numeric character
       if (!/^\d+$/.test(input)) {
+        // error message
         console.log(
           chalk.redBright(
-            `\n📢 Be alert! Your entry should contain only numeric digits, no secret symbols or letters. Try again! \n`
+            `\n📢 Be alert! Your entry should contain only numeric digits, no secret symbols or letters. Try again!\n`
           )
         );
+        showAttempt = false;
         continue;
       }
 
-      // repeated character
+      // check if input has repeated characters
       if (hasRepeatedChars(input)) {
+        // error message
         console.log(
           chalk.redBright(
             `\n📢 Remember, the code should have four unique numbers. No repeats allowed. Try again with distinct digits!\n`
           )
         );
+        showAttempt = false;
         continue;
       }
 
+      // check if the input is a repeated guess
       if (isRepeatedGuess(gameGuesses, input)) {
         console.log(
           chalk.redBright(
-            `\n📢 You already tried this number. Try a different one. \n`
+            `\n📢 You already tried this number. Try a different one.\n`
           )
         );
+        showAttempt = false;
         continue;
       } else {
+        // push a valid input into gameGuesses array
         gameGuesses.push(input);
       }
 
+      // increases attempts
       attempts++;
 
+      // get values of bulls and cows
       const { bulls, cows } = countBullsAndCows(secretNumber, input);
 
+      // winning case
       if (bulls === 4) {
         const congratulationsMessage = centerText(
           `🎉 Congratulations, Agent ${name}! 🎉`
@@ -246,6 +275,8 @@ const start = () => {
         totalVictories++;
         break;
       }
+
+      // no bulls and no cows message; hint message
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
         const noBullsNoCowsMessages = [
           "keep trying, you'll get it!",
@@ -281,6 +312,8 @@ const start = () => {
           )
         );
       }
+
+      // loosing case
       if (attempts === maxAttempts) {
         const losingMessagePart1 = centerText(
           `💥 You've reached the maximum number of attempts. 💥`
@@ -302,12 +335,14 @@ const start = () => {
         );
       }
     }
-
+    // message total games played
     console.log(
       chalk.greenBright(
         `Total games played: ${chalk.rgb(245, 252, 205)(totalGames)}`
       )
     );
+
+    // calculate victory rate; message victory rate
     const victoryRate = Math.floor((totalVictories / totalGames) * 100);
     console.log(
       chalk.greenBright(
@@ -315,8 +350,10 @@ const start = () => {
       )
     );
 
+    // reset playAgain
     playAgain = "";
 
+    // ask player if he/she wants to play again
     while (playAgain === "") {
       playAgain = prompt(
         chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
@@ -328,18 +365,21 @@ const start = () => {
         playAgain = "no";
         break;
       } else {
+        // error message
         console.log(
           chalk.redBright(
             `\n📢 Entry is invalid. It has to be "yes" or "no".\n`
           )
         );
+        playAgain = "";
       }
     }
   }
 
+  // goodbye message
   console.log(
     chalk.cyanBright("\n👋 Bye! Thanks for playing Bulls and Cows! \n")
   );
 };
 
-start();
+main();

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Marinna Pereira and Vasylyna Sidei",
   "license": "ISC",
   "engines": {
     "node": ">=12.0.0"
