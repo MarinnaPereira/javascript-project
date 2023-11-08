@@ -45,6 +45,9 @@ const createSecretNumber = () => {
   return secretNumber;
 };
 
+// Function which checks if the input is a repeated guess
+const isRepeatedGuess = (gameGuesses, input) => gameGuesses.includes(input);
+
 // Function which counts bulls and cows in the player's input
 function countBullsAndCows(input, secretNumber) {
   let result = { bulls: 0, cows: 0 };
@@ -91,54 +94,9 @@ const start = () => {
   // messages for setting up game level/mode
   console.log(
     chalk.cyanBright(
-      "Before we jump right into your mission, lets's set up its level.\n"
+      "Before we jump right into your mission, lets's set up its level."
     )
   );
-
-  console.log(
-    chalk.cyanBright(
-      `For the ${chalk.greenBright(
-        "easy mode"
-      )} with no limit of attempts, type ${chalk.rgb(
-        245,
-        252,
-        205
-      )("1")}. \nFor the ${chalk.greenBright(
-        "hard mode"
-      )} with a maximum of 10 attempts, type ${chalk.rgb(
-        245,
-        252,
-        205
-      )("2")}.\n`
-    )
-  );
-
-  let gameMode = "";
-  let chosenMode = "";
-
-  // get the game mode from the user
-  while (chosenMode === "") {
-    gameMode = prompt(
-      chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
-    );
-
-    if (gameMode.trim() === "1") {
-      chosenMode = "Easy mode";
-      break;
-    } else if (gameMode.trim() === "2") {
-      chosenMode = "Hard mode";
-      break;
-    } else {
-      console.log(
-        chalk.redBright(`\n📢 Entry is invalid. It has to be "1" or "2".\n`)
-      );
-    }
-  }
-
-  console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
-
-  // define maximum of attempts
-  const maxAttempts = gameMode === "1" ? Infinity : 10;
 
   let playAgain = "yes";
   let totalGames = 0;
@@ -146,9 +104,55 @@ const start = () => {
 
   // play the game
   while (playAgain.trim().toLowerCase() === "yes") {
+    console.log(
+      chalk.cyanBright(
+        `\nFor the ${chalk.greenBright(
+          "easy mode"
+        )} with no limit of attempts, type ${chalk.rgb(
+          245,
+          252,
+          205
+        )("1")}. \nFor the ${chalk.greenBright(
+          "hard mode"
+        )} with a maximum of 10 attempts, type ${chalk.rgb(
+          245,
+          252,
+          205
+        )("2")}.\n`
+      )
+    );
+
+    let gameMode = "";
+    let chosenMode = "";
+
+    // get the game mode from the user
+    while (chosenMode === "") {
+      gameMode = prompt(
+        chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
+      );
+
+      if (gameMode.trim() === "1") {
+        chosenMode = "Easy mode";
+        break;
+      } else if (gameMode.trim() === "2") {
+        chosenMode = "Hard mode";
+        break;
+      } else {
+        console.log(
+          chalk.redBright(`\n📢 Entry is invalid. It has to be "1" or "2".\n`)
+        );
+      }
+    }
+
+    console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
+
+    // define maximum of attempts
+    const maxAttempts = gameMode === "1" ? Infinity : 10;
+
     totalGames++;
     const secretNumber = createSecretNumber();
     let attempts = 0;
+    const gameGuesses = [];
 
     console.log(
       chalk.cyanBright(
@@ -203,6 +207,17 @@ const start = () => {
         continue;
       }
 
+      if (isRepeatedGuess(gameGuesses, input)) {
+        console.log(
+          chalk.redBright(
+            `\n📢 You already tried this number. Try a different one. \n`
+          )
+        );
+        continue;
+      } else {
+        gameGuesses.push(input);
+      }
+
       attempts++;
 
       const { bulls, cows } = countBullsAndCows(secretNumber, input);
@@ -214,7 +229,7 @@ const start = () => {
         const messagePart2 = centerText(
           `You cracked the secret code in ${attempts} attempts!`
         );
-        const messagePart3 = centerText(`You're a code-cracking genius. 💼🕵️‍♂️`);
+        const messagePart3 = centerText(`You're a code-cracking genius.`);
         const messagePart4 = centerText(
           `You've earned your stripes as the ultimate Bulls and Cows champion!`
         );
@@ -293,7 +308,7 @@ const start = () => {
         `Total games played: ${chalk.rgb(245, 252, 205)(totalGames)}`
       )
     );
-    const victoryRate = (totalVictories / totalGames) * 100;
+    const victoryRate = Math.floor((totalVictories / totalGames) * 100);
     console.log(
       chalk.greenBright(
         `Victory rate: ${chalk.rgb(245, 252, 205)(victoryRate + "%\n")}`
