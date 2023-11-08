@@ -142,7 +142,7 @@ const start = () => {
 
   let playAgain = "yes";
   let totalGames = 0;
-  let totalAttempts = 0;
+  let totalVictories = 0;
 
   // play the game
   while (playAgain.trim().toLowerCase() === "yes") {
@@ -214,19 +214,21 @@ const start = () => {
         const messagePart2 = centerText(
           `You cracked the secret code in ${attempts} attempts!`
         );
-        const messagePart3 = centerText(`You're a code-cracking genius. 🏆`);
+        const messagePart3 = centerText(`You're a code-cracking genius. 💼🕵️‍♂️`);
         const messagePart4 = centerText(
-          `You've earned your stripes as the ultimate Bulls and Cows champion! 🥳💼🕵️‍♂️`
+          `You've earned your stripes as the ultimate Bulls and Cows champion!`
         );
+        const messagePart5 = centerText(`🎯🏆`);
         const styledMessage = chalk.rgb(
           245,
           252,
           205
         )(
-          `\n${congratulationsMessage}\n\n${messagePart2}\n${messagePart3}\n${messagePart4}\n`
+          `\n${congratulationsMessage}\n\n${messagePart2}\n${messagePart3}\n${messagePart4}\n\n${messagePart5}\n`
         );
 
         console.log(styledMessage);
+        totalVictories++;
         break;
       }
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
@@ -275,62 +277,54 @@ const start = () => {
             205
           )(secretNumber)}.`
         );
-        const losingMessagePart3 = centerText(`Better luck next time! 🍀`);
+        const losingMessagePart3 = centerText(`Better luck next time!`);
+        const losingMessagePart4 = centerText(`🍀`);
 
         console.log(
-          chalk.red(
-            `\n${losingMessagePart1}\n\n${losingMessagePart2}\n${losingMessagePart3}\n`
+          chalk.redBright(
+            `\n${losingMessagePart1}\n\n${losingMessagePart2}\n${losingMessagePart3}\n\n${losingMessagePart4}\n`
           )
         );
       }
     }
-    totalAttempts += attempts;
+
     console.log(
       chalk.greenBright(
         `Total games played: ${chalk.rgb(245, 252, 205)(totalGames)}`
       )
     );
+    const victoryRate = (totalVictories / totalGames) * 100;
     console.log(
       chalk.greenBright(
-        `Total attempts made: ${chalk.rgb(245, 252, 205)(totalAttempts)}\n`
+        `Victory rate: ${chalk.rgb(245, 252, 205)(victoryRate + "%\n")}`
       )
     );
 
-    console.log(
-      chalk.cyanBright(
-        `Would you like to ${chalk.greenBright(
-          "play again"
-        )}? \nIf you'd like to continue, simply type ${chalk.rgb(
-          245,
-          252,
-          205
-        )("yes")}. \nIf not, just type ${chalk.rgb(
-          245,
-          252,
-          205
-        )("no")} to exit the game. \n`
-      )
-    );
+    playAgain = "";
 
     while (playAgain === "") {
       playAgain = prompt(
         chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
       );
 
-      if (playAgain.toLowerCase().trim() === "no") {
+      if (playAgain.toLowerCase().trim() === "yes") {
+        playAgain = "yes";
+      } else if (playAgain.toLowerCase().trim() === "no") {
+        playAgain = "no";
         break;
-      } else if (playAgain.toLowerCase().trim() !== "yes") {
+      } else {
         console.log(
           chalk.redBright(
             `\n📢 Entry is invalid. It has to be "yes" or "no".\n`
           )
         );
-        playAgain = "";
       }
     }
   }
 
-  console.log(chalk.cyanBright("\n👋 Bye! Thanks for playing Bulls and Cows!"));
+  console.log(
+    chalk.cyanBright("\n👋 Bye! Thanks for playing Bulls and Cows! \n")
+  );
 };
 
 start();
