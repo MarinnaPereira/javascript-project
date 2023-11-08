@@ -9,6 +9,9 @@ const prompt = promptSync();
 // Get library for customize terminal colors
 import chalk from "chalk";
 
+// Get library for centering text in the terminal
+import centerText from "center-text";
+
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
 
 // Get player's name
@@ -38,7 +41,7 @@ const createSecretNumber = () => {
       secretNumber += randomDigit;
     }
   }
-  // console.log(secretNumber);
+  console.log(secretNumber);
   return secretNumber;
 };
 
@@ -205,15 +208,25 @@ const start = () => {
       const { bulls, cows } = countBullsAndCows(secretNumber, input);
 
       if (bulls === 4) {
-        console.log(
-          chalk.rgb(
-            245,
-            252,
-            205
-          )(
-            `\n🎉 Congratulations, Agent ${name}! 🎉\nYou cracked the secret code in ${attempts} attempts! You're a code-cracking genius. 🏆\nYou've earned your stripes as the ultimate Bulls and Cows champion! 🥳💼🕵️‍♂️\n`
-          )
+        const congratulationsMessage = centerText(
+          `🎉 Congratulations, Agent ${name}! 🎉`
         );
+        const messagePart2 = centerText(
+          `You cracked the secret code in ${attempts} attempts!`
+        );
+        const messagePart3 = centerText(`You're a code-cracking genius. 🏆`);
+        const messagePart4 = centerText(
+          `You've earned your stripes as the ultimate Bulls and Cows champion! 🥳💼🕵️‍♂️`
+        );
+        const styledMessage = chalk.rgb(
+          245,
+          252,
+          205
+        )(
+          `\n${congratulationsMessage}\n\n${messagePart2}\n${messagePart3}\n${messagePart4}\n`
+        );
+
+        console.log(styledMessage);
         break;
       }
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
@@ -252,13 +265,21 @@ const start = () => {
         );
       }
       if (attempts === maxAttempts) {
+        const losingMessagePart1 = centerText(
+          `💥 You've reached the maximum number of attempts. 💥`
+        );
+        const losingMessagePart2 = centerText(
+          `                 The secret code was ${chalk.rgb(
+            245,
+            252,
+            205
+          )(secretNumber)}.`
+        );
+        const losingMessagePart3 = centerText(`Better luck next time! 🍀`);
+
         console.log(
-          chalk.redBright(
-            `\n💥 You've reached the maximum number of attempts. 💥\nThe secret code was ${chalk.rgb(
-              245,
-              252,
-              205
-            )(secretNumber)}. Better luck next time! 🍀\n`
+          chalk.red(
+            `\n${losingMessagePart1}\n\n${losingMessagePart2}\n${losingMessagePart3}\n`
           )
         );
       }
@@ -275,9 +296,38 @@ const start = () => {
       )
     );
 
-    playAgain = prompt(
-      chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
+    console.log(
+      chalk.cyanBright(
+        `Would you like to ${chalk.greenBright(
+          "play again"
+        )}? \nIf you'd like to continue, simply type ${chalk.rgb(
+          245,
+          252,
+          205
+        )("yes")}. \nIf not, just type ${chalk.rgb(
+          245,
+          252,
+          205
+        )("no")} to exit the game. \n`
+      )
     );
+
+    while (playAgain === "") {
+      playAgain = prompt(
+        chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
+      );
+
+      if (playAgain.toLowerCase().trim() === "no") {
+        break;
+      } else if (playAgain.toLowerCase().trim() !== "yes") {
+        console.log(
+          chalk.redBright(
+            `\n📢 Entry is invalid. It has to be "yes" or "no".\n`
+          )
+        );
+        playAgain = "";
+      }
+    }
   }
 
   console.log(chalk.cyanBright("\n👋 Bye! Thanks for playing Bulls and Cows!"));
