@@ -79,7 +79,7 @@ const main = () => {
   let playAgain = "yes";
   let showAttempt = true;
   let totalGames = 0;
-  let totalWinnings = 0;
+  let totalVictories = 0;
 
   // welcome message
   console.log(
@@ -98,7 +98,7 @@ const main = () => {
     )
   );
 
-  // game level message
+  // message for setting up game level/mode
   console.log(
     chalk.cyanBright(
       "Before we jump right into your mission, lets's set up its level."
@@ -108,8 +108,8 @@ const main = () => {
   // play loop
   while (playAgain.trim().toLowerCase() === "yes") {
     // helper variables
-    let chosenMode = "";
     let gameMode = "";
+    let chosenMode = "";
     let attempts = 0;
     const gameGuesses = [];
 
@@ -272,7 +272,7 @@ const main = () => {
         );
 
         console.log(styledMessage);
-        totalWinnings++;
+        totalVictories++;
         break;
       }
 
@@ -335,7 +335,6 @@ const main = () => {
         );
       }
     }
-
     // message total games played
     console.log(
       chalk.greenBright(
@@ -343,11 +342,11 @@ const main = () => {
       )
     );
 
-    // calculate winning rate; message winning rate
-    const winningRate = Math.floor((totalWinnings / totalGames) * 100);
+    // calculate victory rate; message victory rate
+    const victoryRate = Math.floor((totalVictories / totalGames) * 100);
     console.log(
       chalk.greenBright(
-        `Winning rate: ${chalk.rgb(245, 252, 205)(winningRate + "%\n")}`
+        `Victory rate: ${chalk.rgb(245, 252, 205)(victoryRate + "%\n")}`
       )
     );
 
