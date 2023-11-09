@@ -1,12 +1,10 @@
 console.clear();
 
-// Bulls and Cows
-
 import promptSync from "prompt-sync";
 import chalk from "chalk";
 import centerText from "center-text";
 
-const prompt = promptSync();
+const prompt = promptSync({ sigint: true });
 
 // Prints the game name
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
@@ -36,6 +34,7 @@ const createSecretNumber = () => {
       secretNumber += randomDigit;
     }
   }
+  console.log(secretNumber);
   return secretNumber;
 };
 
@@ -68,7 +67,7 @@ const countBullsAndCows = (input, secretNumber) => {
 
 // Main function
 const main = () => {
-  let playAgain = "yes";
+  let playAgain = "y";
   let showAttempt = true;
   let totalGames = 0;
   let totalWinnings = 0;
@@ -97,9 +96,8 @@ const main = () => {
     )
   );
 
-  // play loop
-  while (playAgain.trim().toLowerCase() === "yes") {
-    // helper variables
+  // main loop
+  while (playAgain.trim().toLowerCase() === "y") {
     let chosenMode = "";
     let gameMode = "";
     let attempts = 0;
@@ -110,13 +108,13 @@ const main = () => {
       chalk.cyanBright(
         `\nFor the ${chalk.greenBright(
           "easy mode"
-        )} with no limit of attempts, type ${chalk.rgb(
+        )}, with a maximum of 20 attempts, type ${chalk.rgb(
           245,
           252,
           205
         )("1")}. \nFor the ${chalk.greenBright(
           "hard mode"
-        )} with a maximum of 10 attempts, type ${chalk.rgb(
+        )}, with a maximum of 10 attempts, type ${chalk.rgb(
           245,
           252,
           205
@@ -124,13 +122,11 @@ const main = () => {
       )
     );
 
-    // get game mode choice from the player
     while (chosenMode === "") {
       gameMode = prompt(
-        chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):")
+        chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
       );
 
-      // set chosenMode
       if (gameMode.trim() === "1") {
         chosenMode = "Easy mode";
         break;
@@ -147,13 +143,10 @@ const main = () => {
     // message with the chosen mode
     console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
 
-    // define maximum of attempts
-    const maxAttempts = chosenMode === "Easy mode" ? Infinity : 10;
+    const maxAttempts = chosenMode === "Easy mode" ? 20 : 10;
 
-    // increases total of played games
     totalGames++;
 
-    // get secret number
     const secretNumber = createSecretNumber();
 
     // message first guess
@@ -165,14 +158,11 @@ const main = () => {
     );
 
     while (attempts < maxAttempts) {
-      // message attempts left -> hard mode
-      if (chosenMode === "Hard mode" && attempts > 0 && showAttempt) {
+      // message attempts left
+      if (attempts > 0 && showAttempt) {
         console.log(
           chalk.yellow(`You have ${maxAttempts - attempts} attempts left.\n`)
         );
-      } else if (chosenMode === "Easy mode" && attempts > 0 && showAttempt) {
-        // message no. attempts -> easy mode
-        console.log(chalk.yellow(`This is your attempt No. ${attempts}.\n`));
       }
 
       // reset showAttempt
@@ -182,11 +172,8 @@ const main = () => {
       let input = prompt(
         chalk.cyanBright.bgGreenBright.bold("Enter your guess:") + " "
       );
-
-      // treat input
       input = input.trim();
 
-      // check input's length
       if (input.length !== 4) {
         // error message
         console.log(
@@ -210,7 +197,6 @@ const main = () => {
         continue;
       }
 
-      // check if input has repeated characters
       if (hasRepeatedChars(input)) {
         // error message
         console.log(
@@ -222,7 +208,6 @@ const main = () => {
         continue;
       }
 
-      // check if the input is a repeated guess
       if (isRepeatedGuess(gameGuesses, input)) {
         console.log(
           chalk.redBright(
@@ -236,10 +221,8 @@ const main = () => {
         gameGuesses.push(input);
       }
 
-      // increases attempts
       attempts++;
 
-      // get values of bulls and cows
       const { bulls, cows } = countBullsAndCows(secretNumber, input);
 
       // winning case
@@ -268,7 +251,7 @@ const main = () => {
         break;
       }
 
-      // no bulls and no cows message | hint message
+      // no bulls and no cows message || hint message
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
         const noBullsNoCowsMessages = [
           "keep trying, you'll get it!",
@@ -283,7 +266,7 @@ const main = () => {
               chalk.greenBright(bulls) +
               " bulls and " +
               chalk.greenBright(cows) +
-              " cows. But "
+              " cows. But"
             } ${
               noBullsNoCowsMessages[
                 Math.floor(Math.random() * noBullsNoCowsMessages.length)
@@ -291,7 +274,7 @@ const main = () => {
             }`
           )
         );
-      } else if (attempts < 10) {
+      } else if (attempts < maxAttempts) {
         console.log(
           chalk.greenBright(
             `\nHere is a hint: ${chalk.white(
@@ -299,7 +282,7 @@ const main = () => {
                 chalk.greenBright(bulls) +
                 " bulls and " +
                 chalk.greenBright(cows) +
-                " cows. Keep going... "
+                " cows. Cool! Keep going... "
             )}`
           )
         );
@@ -328,15 +311,15 @@ const main = () => {
       }
     }
 
-    // message total games played
+    // prints total games played
     console.log(
       chalk.greenBright(
         `Total games played: ${chalk.rgb(245, 252, 205)(totalGames)}`
       )
     );
 
-    // calculate winning rate; message winning rate
     const winningRate = Math.floor((totalWinnings / totalGames) * 100);
+    // prints winning rate
     console.log(
       chalk.greenBright(
         `Winning rate: ${chalk.rgb(245, 252, 205)(winningRate + "%\n")}`
@@ -346,23 +329,21 @@ const main = () => {
     // reset playAgain
     playAgain = "";
 
-    // ask player if he/she wants to play again
     while (playAgain === "") {
       playAgain = prompt(
-        chalk.cyanBright.bgGreenBright.bold("Play again? (yes/no):") + " "
+        chalk.cyanBright.bgGreenBright.bold("Play again? (y/n):") + " "
       );
 
-      if (playAgain.toLowerCase().trim() === "yes") {
-        playAgain = "yes";
-      } else if (playAgain.toLowerCase().trim() === "no") {
-        playAgain = "no";
+      if (playAgain.toLowerCase().trim() === "y") {
+        playAgain = "y";
+        console.clear();
+      } else if (playAgain.toLowerCase().trim() === "n") {
+        playAgain = "n";
         break;
       } else {
         // error message
         console.log(
-          chalk.redBright(
-            `\n📢 Entry is invalid. It has to be "yes" or "no".\n`
-          )
+          chalk.redBright(`\n📢 Entry is invalid. It has to be "y" or "n".\n`)
         );
         playAgain = "";
       }

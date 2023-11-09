@@ -1,92 +1,148 @@
-# Bulls and Cows
+# Bulls and Cows Game
 
-In this project we will build a two player game that is called **Bulls and Cows**.
+![](./assets/game_logo__1_.jpg)
 
-![cow icon](assets/cow.svg) ![bull icon](assets/bull.svg)
+A simple console-based implementation of the Bulls and Cows guessing game in Node.js. Test your code-breaking skills and have fun while playing!
 
-## Rules
+## Table of Contents
 
-One of the players comes up with a secret number, and the other player tries to guess it.
+- [Getting Started](#getting-started)
+- [Game Rules](#game-rules)
+- [How to Play](#how-to-play)
+- [Game Modes](#game-modes)
+- [Gameplay](#gameplay)
+- [Build with](#build-with)
+- [Features](#features)
+- [Authors](#authors)
+- [License](#license)
 
-The secret number must consist of 4 digits and each digit must be **unique**.
+## Getting Started
 
-For example:
+### Prerequisites
 
-- `1112` would **not** be an acceptable secret number
-- `1234` on the other hand is an acceptable value for the secret number, since each digit is unique
+Before you start, make sure you have **Node.js** installed on your machine.
 
-After each guess, the player will get a hint to help them guess better next time around.
+### Installation
 
-The hint tells the player how many bulls and how many cows there were. What are bulls and cows?
+1. Clone the repository or download the source code:
 
-- If there are any matching digits and they are in their right positions, they are counted as *"bulls"*.
-- If in different positions, they are counted as *"cows"*.
-
-For example, with a secret number `4271`:
-
->
-    Player's try: 1234
-
-    Hint: 1 bull and 2 cows
-
-
-How did we arrive at one bull and two cows?
-The bull is the number `2` as it is in the right position.
-
-The cows are `4` and `1`, as they exist in the secret number but they are not in the right position.
-
-Do **not** disclose to the user which digit is a cow and which one is bull, just how many there are (if any).
-
-There is no limit on the number of guesses - guessing continues until the player figures out the other player's secret number.
-
-Once the player has guessed the secret number correctly, display a message to congratulate them.
-
-## Getting the input from the terminal 
-
-Our game will be player vs computer. The computer will come up with a secret number and the player will be trying to guess it.
-
-To gather the player's input we will use an npm package called [`prompt-sync`](https://github.com/heapwolf/prompt-sync).
-
-We can use the package like so:
-
-```js
-// Import package
-const prompt = require('prompt-sync')({ sigint: true });
-// Use package
-let name = prompt('What is your name? '); // Note there is a space at the end, so the input does not stick to the question
+```bash
+git clone https://github.com/yourusername/bulls-and-cows-game.git
 ```
 
-Then the variable name will contain the value that the user entered in the terminal.
+2. Navigate to the project directory:
 
-Make sure to validate the input to a certain extent. For example:
+```bash
+cd bulls-and-cows-game
+```
 
-- it must exist (the user can simply hit enter, but we should not accept this as a valid guess)
-- it must be 4 digits
-- each of the 4 digits must be unique
+3. Install the required npm packages:
 
-## Extra
+```bash
+npm install
+```
 
-Let's make this game even better!
+4. Install the prompt-sync module:
 
-If you have the core of the game up and running, 
-here are some cool features you can add next:
+```bash
+npm install prompt-sync
+```
 
-- __Number of attempts__ to guess the secret number: There will be no limit of guessing, but we can keep track of how many attempts the player needed to solve the puzzle.
-- __Randomized message__ every time the user has no bulls and no cows: Instead of always showing the same message, let's create a collection of fun messages every time the guess hits no digits.
-- __User's name__: Let's get the player's name, if they want to share. You can then use the name in the congratulations and  failure messages and hints. If no name is provided, you can use a default like `Player` or `Stranger`. 
-- __Another round__: Once the player has guessed the number correctly, you can ask them to play another round if they want to and restart the game.
-- __Another round stats__: If the user plays multiple rounds, you display the total of games played and the number of attempts for each game.
-- __Maximum number of attempts__: If the user cannot guess in N attemps, they lose the game.
-- __Configurable game level__: The user can choose if they want to play easy or difficult mode. In easy mode, for example, there could be no lmit on the number of attempts, while the difficult level could have a limit.
+5. Install the terminal string styling module chalk:
 
-All the extras are only **optional** - add one or two if you want to have a bigger challenge, but only **after** the core of the game is working. Don't forget to push your code to version control, so you have a working copy to go back to if you need to.
+```bash
+npm install chalk
+```
 
-## Deadline
+6. Install the center-text module:
 
-You have ~3,5 days to make the game work.
+```bash
+npm install center-text
+```
 
-## Deliverables
+## Game Rules
 
-A repository containing your code.
+Bulls and Cows is a guessing game where the player tries to guess a secret 4-digit number with unique digits. The game provides feedback in the form of "bulls" and "cows" after each guess.
 
-**Happy coding!** 🤓
+- A "bull" indicates that a digit in the guessed number is in the correct position.
+- A "cow" indicates that a digit in the guessed number is correct but in the wrong position.
+- The goal is to guess the secret number with the fewest attempts possible.
+
+  ![](./assets/easy_mode_attempts.png)
+
+## How to Play
+
+1. Start the game using the following command:
+
+```bash
+node index.js
+```
+
+2. You will be prompted to enter your name, or you can leave it as "Stranger."
+
+3. Choose the game mode (easy or hard) by entering "1" or "2" based on your preference.
+
+4. In easy mode, there is no limit to the number of attempts. In hard mode, you have a maximum of 10 attempts to guess the secret number.
+
+5. Enter a 4-digit number as your guess. The game will provide feedback on the number of bulls and cows in your guess.
+
+6. Keep guessing until you correctly guess the secret number or run out of attempts.
+
+7. You can choose to play another round or exit the game.
+
+## Game Modes
+
+- **Easy Mode**: Unlimited attempts to guess the secret number.
+
+  ![](./assets/easy_mode.png)
+
+- **Hard Mode**: Limited to 10 attempts to guess the secret number.
+
+  ![](./assets/hard_mode.png)
+
+## Gameplay
+
+The game will provide feedback on each guess, letting you know how many bulls and cows are in your guess.
+If you correctly guess the secret number, you win the game and receive a congratulatory message.
+If you run out of attempts without guessing the secret number, you lose and are provided with the secret number.
+
+## Build with
+
+- Javascript
+- npm
+- Node.js
+- Chalk
+- Prompt
+- Center-text
+
+## Features
+
+1. **Top-Secret Code Generator:**
+   - Unleash the unpredictability of our secret code generator for a fresh challenge in every game.
+2. **Two Mission Levels:**
+   - Easily pick your mission difficulty using our game mode selector, crafted to cater to both beginners and experts alike.
+3. **Smart Input Validation:**
+   - Stay sharp with our validator, offering clear error messages and guiding you through each move.
+4. **Move Tracker:**
+   - Keep count of your every move with the attempts tracker.
+5. **Hint Messages:**
+   - Stuck? Get a helping hand with the hint feature, providing clues to steer you in the right direction with every guess.
+6. **Progress Tracker:**
+   - Monitor your gaming journey with the total games played tracker, showcasing your commitment to mastering the secret code.
+7. **Winning Rate Analytics:**
+   - Measure your code-breaking performance with the winning rate calculator, revealing the percentage of games conquered.
+8. **Seamless Replay:**
+   - Dive into a new challenge instantly with the "Play Again" feature, ensuring uninterrupted gaming fun.
+9. **User-Friendly Interface:**
+   - Immerse yourself in the game with a command-line interface designed for a smooth and enjoyable experience.
+10. **Addictive Challenge:**
+    - Enjoy a captivating gameplay experience that blends entertainment with code-cracking mastery. Get ready for the ultimate coding adventure!
+
+## Authors
+
+- Marinna Pereira
+- Vasylyna Sidei
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
