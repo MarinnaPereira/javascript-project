@@ -1,6 +1,11 @@
 console.clear();
 
-// ! Bulls and Cows
+interface BullsAndCows {
+  bulls: number;
+  cows: number;
+}
+
+// Bulls and Cows
 
 // Get library for user input
 import promptSync from "prompt-sync";
@@ -10,34 +15,35 @@ const prompt = promptSync();
 import chalk from "chalk";
 
 // Get library for centering text in the terminal
-import centerText from "center-text";
-
+// import centerText from "center-text"; -> look for align text - if you want the types for a package install with @types/align-text
 // Prints the game name
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
 
 // Get player's name
-const playerName = prompt(
+const playerName: string = prompt(
   chalk.cyanBright.bgGreenBright.bold("Enter your name?") + " "
 );
 
-const name = playerName.trim() || "Stranger";
+const name: string = playerName.trim() || "Stranger";
 
 // Function which greets the player using random greetings
-const greet = (name) => {
-  const greetings = ["Hi", "Hey", "Hello", "Yo"];
-  const randomIndex = Math.floor(Math.random() * greetings.length);
-  const randomGreetings = greetings[randomIndex];
+const greet = (name: string): string => {
+  const greetings: string[] = ["Hi", "Hey", "Hello", "Yo"];
+  const randomIndex: number = Math.floor(Math.random() * greetings.length);
+  const randomGreetings: string = greetings[randomIndex];
   return `${randomGreetings}, ${chalk.greenBright(name)}!`;
 };
 
 // Function which creates a secret number with 4 unique digits
-const createSecretNumber = () => {
-  const possibleDigits = "0123456789";
-  let secretNumber = "";
+const createSecretNumber = (): string => {
+  const possibleDigits: string = "0123456789";
+  let secretNumber: string = "";
 
   while (secretNumber.length < 4) {
-    const randomIndex = Math.floor(Math.random() * possibleDigits.length);
-    const randomDigit = possibleDigits[randomIndex];
+    const randomIndex: number = Math.floor(
+      Math.random() * possibleDigits.length
+    );
+    const randomDigit: string = possibleDigits[randomIndex];
     if (!secretNumber.includes(randomDigit)) {
       secretNumber += randomDigit;
     }
@@ -47,9 +53,9 @@ const createSecretNumber = () => {
 };
 
 // Function which checks the input for repeated characters
-const hasRepeatedChars = (input) => {
-  for (let i = 0; i < input.length; i++) {
-    const char = input[i];
+const hasRepeatedChars = (input: string): boolean => {
+  for (let i: number = 0; i < input.length; i++) {
+    const char: string = input[i];
     if (input.includes(char, i + 1)) {
       return true;
     }
@@ -58,12 +64,16 @@ const hasRepeatedChars = (input) => {
 };
 
 // Function which checks if the input is a repeated guess
-const isRepeatedGuess = (gameGuesses, input) => gameGuesses.includes(input);
+const isRepeatedGuess = (gameGuesses: string[], input: string): boolean =>
+  gameGuesses.includes(input);
 
 // Function which counts bulls and cows in the player's input
-const countBullsAndCows = (input, secretNumber) => {
-  let result = { bulls: 0, cows: 0 };
-  for (let i = 0; i < 4; i++) {
+const countBullsAndCows = (
+  input: string,
+  secretNumber: string
+): BullsAndCows => {
+  let result: BullsAndCows = { bulls: 0, cows: 0 };
+  for (let i: number = 0; i < 4; i++) {
     if (secretNumber[i] === input[i]) {
       result.bulls++;
     } else if (secretNumber.includes(input[i])) {
@@ -74,12 +84,12 @@ const countBullsAndCows = (input, secretNumber) => {
 };
 
 // Main function
-const main = () => {
+const main = (): void => {
   // helper variables
-  let playAgain = "yes";
-  let showAttempt = true;
-  let totalGames = 0;
-  let totalVictories = 0;
+  let playAgain: string = "yes";
+  let showAttempt: boolean = true;
+  let totalGames: number = 0;
+  let totalWinnings: number = 0;
 
   // welcome message
   console.log(
@@ -98,7 +108,7 @@ const main = () => {
     )
   );
 
-  // message for setting up game level/mode
+  // game level message
   console.log(
     chalk.cyanBright(
       "Before we jump right into your mission, lets's set up its level."
@@ -108,10 +118,10 @@ const main = () => {
   // play loop
   while (playAgain.trim().toLowerCase() === "yes") {
     // helper variables
-    let gameMode = "";
-    let chosenMode = "";
-    let attempts = 0;
-    const gameGuesses = [];
+    let chosenMode: string = "";
+    let gameMode: string = "";
+    let attempts: number = 0;
+    const gameGuesses: string[] = [];
 
     // message explaining game modes
     console.log(
@@ -156,13 +166,13 @@ const main = () => {
     console.log(chalk.rgb(255, 136, 0)(`\nNice! ${chosenMode} it is!`));
 
     // define maximum of attempts
-    const maxAttempts = chosenMode === "Easy mode" ? Infinity : 10;
+    const maxAttempts: number = chosenMode === "Easy mode" ? Infinity : 10;
 
     // increases total of played games
     totalGames++;
 
     // get secret number
-    const secretNumber = createSecretNumber();
+    const secretNumber: string = createSecretNumber();
 
     // message first guess
     console.log(
@@ -187,7 +197,7 @@ const main = () => {
       showAttempt = true;
 
       // get player's guess
-      let input = prompt(
+      let input: string = prompt(
         chalk.cyanBright.bgGreenBright.bold("Enter your guess:") + " "
       );
 
@@ -252,17 +262,17 @@ const main = () => {
 
       // winning case
       if (bulls === 4) {
-        const congratulationsMessage = centerText(
+        const congratulationsMessage = chalk.bgBlue(
           `🎉 Congratulations, Agent ${name}! 🎉`
         );
-        const messagePart2 = centerText(
+        const messagePart2 = chalk.bgBlue(
           `You cracked the secret code in ${attempts} attempts!`
         );
-        const messagePart3 = centerText(`You're a code-cracking genius.`);
-        const messagePart4 = centerText(
+        const messagePart3 = chalk.bgBlue(`You're a code-cracking genius.`);
+        const messagePart4 = chalk.bgBlue(
           `You've earned your stripes as the ultimate Bulls and Cows champion!`
         );
-        const messagePart5 = centerText(`🎯🏆`);
+        const messagePart5 = chalk.bgBlue(`🎯🏆`);
         const styledMessage = chalk.rgb(
           245,
           252,
@@ -272,7 +282,7 @@ const main = () => {
         );
 
         console.log(styledMessage);
-        totalVictories++;
+        totalWinnings++;
         break;
       }
 
@@ -313,20 +323,20 @@ const main = () => {
         );
       }
 
-      // loosing case
+      // losing case
       if (attempts === maxAttempts) {
-        const losingMessagePart1 = centerText(
+        const losingMessagePart1 = chalk.bgBlue(
           `💥 You've reached the maximum number of attempts. 💥`
         );
-        const losingMessagePart2 = centerText(
+        const losingMessagePart2 = chalk.bgBlue(
           `                 The secret code was ${chalk.rgb(
             245,
             252,
             205
           )(secretNumber)}.`
         );
-        const losingMessagePart3 = centerText(`Better luck next time!`);
-        const losingMessagePart4 = centerText(`🍀`);
+        const losingMessagePart3 = chalk.bgBlue(`Better luck next time!`);
+        const losingMessagePart4 = chalk.bgBlue(`🍀`);
 
         console.log(
           chalk.redBright(
@@ -335,6 +345,7 @@ const main = () => {
         );
       }
     }
+
     // message total games played
     console.log(
       chalk.greenBright(
@@ -342,11 +353,11 @@ const main = () => {
       )
     );
 
-    // calculate victory rate; message victory rate
-    const victoryRate = Math.floor((totalVictories / totalGames) * 100);
+    // calculate winning rate; message winning rate
+    const winningRate: number = Math.floor((totalWinnings / totalGames) * 100);
     console.log(
       chalk.greenBright(
-        `Victory rate: ${chalk.rgb(245, 252, 205)(victoryRate + "%\n")}`
+        `Winning rate: ${chalk.rgb(245, 252, 205)(winningRate + "%\n")}`
       )
     );
 

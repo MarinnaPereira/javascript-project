@@ -1,25 +1,19 @@
 console.clear();
 
-// ! Bulls and Cows
+// Bulls and Cows
 
-// Get library for user input
 import promptSync from "prompt-sync";
-const prompt = promptSync();
-
-// Get library for customize terminal colors
 import chalk from "chalk";
-
-// Get library for centering text in the terminal
 import centerText from "center-text";
+
+const prompt = promptSync();
 
 // Prints the game name
 console.log(`${chalk.cyanBright.underline("BULLS AND COWS") + "\n"}`);
 
-// Get player's name
 const playerName = prompt(
   chalk.cyanBright.bgGreenBright.bold("Enter your name?") + " "
 );
-
 const name = playerName.trim() || "Stranger";
 
 // Function which greets the player using random greetings
@@ -42,7 +36,6 @@ const createSecretNumber = () => {
       secretNumber += randomDigit;
     }
   }
-  console.log(secretNumber);
   return secretNumber;
 };
 
@@ -75,7 +68,6 @@ const countBullsAndCows = (input, secretNumber) => {
 
 // Main function
 const main = () => {
-  // helper variables
   let playAgain = "yes";
   let showAttempt = true;
   let totalGames = 0;
@@ -135,7 +127,7 @@ const main = () => {
     // get game mode choice from the player
     while (chosenMode === "") {
       gameMode = prompt(
-        chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):") + " "
+        chalk.cyanBright.bgGreenBright.bold("Choose game mode (1/2):")
       );
 
       // set chosenMode
@@ -276,7 +268,7 @@ const main = () => {
         break;
       }
 
-      // no bulls and no cows message; hint message
+      // no bulls and no cows message | hint message
       if (bulls === 0 && cows === 0 && attempts < maxAttempts) {
         const noBullsNoCowsMessages = [
           "keep trying, you'll get it!",
@@ -313,7 +305,7 @@ const main = () => {
         );
       }
 
-      // loosing case
+      // losing case
       if (attempts === maxAttempts) {
         const losingMessagePart1 = centerText(
           `💥 You've reached the maximum number of attempts. 💥`
