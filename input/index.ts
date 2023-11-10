@@ -297,7 +297,7 @@ const main = (): void => {
                 chalk.greenBright(bulls) +
                 " bulls and " +
                 chalk.greenBright(cows) +
-                " cows. Cool! Keep going... "
+                " cows. Keep going... "
             )}`
           )
         );

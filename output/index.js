@@ -1,7 +1,6 @@
 console.clear();
 import promptSync from "prompt-sync";
 import chalk from "chalk";
-// import align from "align-text";
 import center from "center-align";
 const prompt = promptSync({ sigint: true });
 // Prints the game name
@@ -26,7 +25,7 @@ const createSecretNumber = () => {
             secretNumber += randomDigit;
         }
     }
-    console.log(secretNumber);
+    // console.log(secretNumber);
     return secretNumber;
 };
 // Function which checks the input for repeated characters
@@ -165,7 +164,7 @@ const main = () => {
                     chalk.greenBright(bulls) +
                     " bulls and " +
                     chalk.greenBright(cows) +
-                    " cows. Cool! Keep going... ")}`));
+                    " cows. Keep going... ")}`));
             }
             // losing case
             if (attempts === maxAttempts) {
