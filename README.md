@@ -54,10 +54,10 @@ npm install prompt-sync
 npm install chalk
 ```
 
-6. Install the center-text module:
+6. Install the center-align module:
 
 ```bash
-npm install center-text
+npm install center-align
 ```
 
 ## Game Rules
@@ -109,6 +109,7 @@ If you run out of attempts without guessing the secret number, you lose and are 
 ## Build with
 
 - Javascript
+- Typescript
 - npm
 - Node.js
 - Chalk
