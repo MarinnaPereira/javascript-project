@@ -1,6 +1,6 @@
 # Bulls and Cows Game
 
-![](./assets/game_logo__1_.jpg)
+![](./assets/game_logo.jpg)
 
 A simple console-based implementation of the Bulls and Cows guessing game in Node.js. Test your code-breaking skills and have fun while playing!
 
@@ -50,7 +50,7 @@ Bulls and Cows is a guessing game where the player tries to guess a secret 4-dig
 - A "cow" indicates that a digit in the guessed number is correct but in the wrong position.
 - The goal is to guess the secret number with the fewest attempts possible.
 
-  ![](./assets/easy_mode_attempts.png)
+  ![](./assets/hint_and_attempts.png)
 
 ## How to Play
 
@@ -70,7 +70,7 @@ node index.js
 
 4. Choose the game mode (easy or hard) by entering "1" or "2" based on your preference.
 
-5. In easy mode, there is no limit to the number of attempts. In hard mode, you have a maximum of 10 attempts to guess the secret number.
+5. In easy mode, the limit for attempts to guess the secret number is set at 20. In hard mode, you have a maximum of 10 attempts to guess the secret number.
 
 6. Enter a 4-digit number as your guess. The game will provide feedback on the number of bulls and cows in your guess.
 
@@ -80,11 +80,11 @@ node index.js
 
 ## Game Modes
 
-- **Easy Mode**: Unlimited attempts to guess the secret number.
+- **Easy Mode**: Limited to a maximum of 20 attempts to guess the secret number.
 
   ![](./assets/easy_mode.png)
 
-- **Hard Mode**: Limited to 10 attempts to guess the secret number.
+- **Hard Mode**: Limited to a maximum of 10 attempts to guess the secret number.
 
   ![](./assets/hard_mode.png)
 

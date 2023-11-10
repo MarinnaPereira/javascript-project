@@ -7,7 +7,6 @@ interface BullsAndCows {
 
 import promptSync from "prompt-sync";
 import chalk from "chalk";
-// import align from "align-text";
 import center from "center-align";
 
 const prompt = promptSync({ sigint: true });
@@ -43,7 +42,7 @@ const createSecretNumber = (): string => {
       secretNumber += randomDigit;
     }
   }
-  console.log(secretNumber);
+  // console.log(secretNumber);
   return secretNumber;
 };
 
