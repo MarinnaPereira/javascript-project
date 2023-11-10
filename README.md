@@ -102,7 +102,7 @@ If you run out of attempts without guessing the secret number, you lose and are 
 - Node.js
 - Chalk
 - Prompt
-- Center-text
+- Center-align
 
 ## Features
 
