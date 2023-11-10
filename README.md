@@ -42,24 +42,6 @@ cd bulls-and-cows-game
 npm install
 ```
 
-4. Install the prompt-sync module:
-
-```bash
-npm install prompt-sync
-```
-
-5. Install the terminal string styling module chalk:
-
-```bash
-npm install chalk
-```
-
-6. Install the center-align module:
-
-```bash
-npm install center-align
-```
-
 ## Game Rules
 
 Bulls and Cows is a guessing game where the player tries to guess a secret 4-digit number with unique digits. The game provides feedback in the form of "bulls" and "cows" after each guess.
@@ -72,23 +54,29 @@ Bulls and Cows is a guessing game where the player tries to guess a secret 4-dig
 
 ## How to Play
 
-1. Start the game using the following command:
+1. Navigate to the output directory
+
+```bash
+cd output
+```
+
+2. Start the game using the following command:
 
 ```bash
 node index.js
 ```
 
-2. You will be prompted to enter your name, or you can leave it as "Stranger."
+3. You will be prompted to enter your name, or you can leave it as "Stranger."
 
-3. Choose the game mode (easy or hard) by entering "1" or "2" based on your preference.
+4. Choose the game mode (easy or hard) by entering "1" or "2" based on your preference.
 
-4. In easy mode, there is no limit to the number of attempts. In hard mode, you have a maximum of 10 attempts to guess the secret number.
+5. In easy mode, there is no limit to the number of attempts. In hard mode, you have a maximum of 10 attempts to guess the secret number.
 
-5. Enter a 4-digit number as your guess. The game will provide feedback on the number of bulls and cows in your guess.
+6. Enter a 4-digit number as your guess. The game will provide feedback on the number of bulls and cows in your guess.
 
-6. Keep guessing until you correctly guess the secret number or run out of attempts.
+7. Keep guessing until you correctly guess the secret number or run out of attempts.
 
-7. You can choose to play another round or exit the game.
+8. You can choose to play another round or exit the game.
 
 ## Game Modes
 
